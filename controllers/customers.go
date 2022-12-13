@@ -96,3 +96,19 @@ func UpdateCustomerByID(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNotFound)
 }
+
+func DeleteCustomerByID(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := mux.Vars(r)["id"]
+
+	for i, c := range persistance.Data {
+		if c.ID == id {
+			persistance.Data = append(persistance.Data[:i], persistance.Data[i+1:]...)
+
+			w.WriteHeader(http.StatusOK)
+			break
+		}
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+}
