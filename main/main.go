@@ -14,6 +14,7 @@ func main() {
 	router.HandleFunc("/customers", controllers.GetCustomers).Methods("GET")
 	router.HandleFunc("/customers", controllers.CreateCustomer).Methods("POST")
 	router.HandleFunc("/customers/{id}", controllers.GetCustomerByID).Methods("GET")
+	router.HandleFunc("/customers/{id}", controllers.UpdateCustomerByID).Methods("PUT")
 
 	fmt.Println("Server is running at http://localhost:3000/")
 	http.ListenAndServe(":3000", router)

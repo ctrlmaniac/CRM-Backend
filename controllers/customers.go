@@ -61,3 +61,38 @@ func GetCustomerByID(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNotFound)
 }
+
+func UpdateCustomerByID(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := mux.Vars(r)["id"]
+
+	for i, c := range persistance.Data {
+		if c.ID == id {
+			// If customer is found then update
+			var rawData map[string]string
+
+			reqBody, _ := ioutil.ReadAll(r.Body)
+
+			json.Unmarshal(reqBody, &rawData)
+
+			contacted, _ := strconv.ParseBool(rawData["Contacted"])
+
+			updatedCustomer := models.Customer{
+				ID:        id,
+				Name:      rawData["Name"],
+				Role:      rawData["Role"],
+				Email:     rawData["Email"],
+				Phone:     rawData["Phone"],
+				Contacted: contacted,
+			}
+
+			persistance.Data[i] = updatedCustomer
+
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(updatedCustomer)
+			break
+		}
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+}
