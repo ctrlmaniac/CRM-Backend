@@ -5,7 +5,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var customers = []models.Customer{
+var Data = []models.Customer{
 	{
 		ID:        uuid.New().String(),
 		Name:      "Mario Rossi",
